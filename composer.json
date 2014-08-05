@@ -9,9 +9,6 @@
             "email": "pavel.linkesch@gmail.com"
         }
     ],
-    "require": {
-        "marvin/core": "~0.0.1"
-    },
     "autoload": {
         "psr-4": {
             "Marvin\\Pages\\": "/"
