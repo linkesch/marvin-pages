@@ -1,0 +1,54 @@
+{% extends "admin/layout.twig" %}
+
+{% block content %}
+    <header class="page-header">
+        <h1>Pages</h1>
+    </header>
+
+    {% for message in app.session.getFlashBag.get('message') %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+
+    <p><a href="/admin/pages/form" class="btn btn-primary">New page</a></p>
+    <p>Number of pages: {{ pages|length }}</p>
+    <br>
+
+    <table id="pages" class="table table-striped">
+        <thead>
+            <tr>
+                <th>Page</th>
+                <th>URL</th>
+                <th width="20%" colspan="2">Order</th>
+                <th width="15%"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for page in pages %}
+                <tr>
+                    <td>{{ page.name }}</td>
+                    <td><a href="/{{ page.slug }}" target="_blank">/{{ page.slug }}</a></td>
+                    <td>
+                        <a href="/admin/pages/move/{{ page.id }}/up" class="btn btn-default move-up move{% if loop.first %} hidden{% endif %}">
+                            <span class="glyphicon glyphicon-arrow-up"></span>
+                            Move up
+                        </a>
+                    </td>
+                    <td>
+                        <a href="/admin/pages/move/{{ page.id }}/down" class="btn btn-default move-down move{% if loop.last %} hidden{% endif %}">
+                            <span class="glyphicon glyphicon-arrow-down"></span>
+                            Move down
+                        </a>
+                    </td>
+                    <td>
+                        <a href="/admin/pages/form/{{ page.id }}" class="btn btn-primary">Edit</a>
+                        <a href="/admin/pages/delete/{{ page.id }}" class="btn btn-danger confirm">Delete</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">There are no pages. <a href="/admin/pages/form">Create the first one now.</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

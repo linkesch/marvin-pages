@@ -1,0 +1,20 @@
+{
+    "name": "marvin/pages",
+    "description": "Micro CMS based on Silex framework - Pages plugin",
+    "version": "0.0.1",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Pavel Linkesch",
+            "email": "pavel.linkesch@gmail.com"
+        }
+    ],
+    "require": {
+        "marvin/core": "~0.0.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Marvin\\Pages\\": "/"
+        }
+    }
+}
