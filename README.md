@@ -1,4 +1,4 @@
-marvin-pages
-============
+Marvin - Pages plugin
+=====================
 
-Micro CMS based on Silex framework - Pages plugin
+Pages plugin for [Marvin - micro CMS](https://github.com/orthes/marvin-core).

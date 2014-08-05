@@ -2,11 +2,13 @@
     "name": "marvin/pages",
     "description": "Micro CMS based on Silex framework - Pages plugin",
     "version": "0.0.1",
+    "homepage": "http://github.com/orthes/marvin-pages",
     "license": "MIT",
     "authors": [
         {
             "name": "Pavel Linkesch",
-            "email": "pavel.linkesch@gmail.com"
+            "email": "pavel.linkesch@gmail.com",
+            "homepage": "http://linkesch.sk"
         }
     ],
     "autoload": {
