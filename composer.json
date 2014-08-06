@@ -11,6 +11,9 @@
             "homepage": "http://linkesch.sk"
         }
     ],
+    "require": {
+        "marvin/core": "dev-master"
+    },
     "autoload": {
         "psr-4": {
             "Marvin\\Pages\\": ""
