@@ -1,5 +1,5 @@
 var marvin_pages = function () {
-    var editors = [];
+    var editors = {};
 
     return {
         init: function () {
@@ -47,25 +47,29 @@ var marvin_pages = function () {
         },
 
         editor: function () {
-            editors['name'] = new MediumEditor('#page-name', {
-                buttonLabels: 'fontawesome',
-                disableReturn: true,
-                disableToolbar: true
-            });
-            editors['content'] = new MediumEditor('#page-content', {
-                buttonLabels: 'fontawesome'
-            });
+            if ($('#page-name, #page-content').length) {
+                editors.name = new MediumEditor('#page-name', {
+                    buttonLabels: 'fontawesome',
+                    disableReturn: true,
+                    disableToolbar: true
+                });
+                editors.content = new MediumEditor('#page-content', {
+                    buttonLabels: 'fontawesome'
+                });
 
-            $('#page-content').mediumInsert({
-                editor: editors['content'],
-                addons: {
-                    images: {
-                        imagesUploadScript: '/admin/pages/file/upload',
-                        imagesDeleteScript: '/admin/pages/file/delete'
-                    },
-                    embeds: {}
-                }
-            });
+                $('#page-content').mediumInsert({
+                    editor: editors.content,
+                    addons: {
+                        images: {
+                            imagesUploadScript: '/admin/pages/file/upload',
+                            imagesDeleteScript: '/admin/pages/file/delete'
+                        },
+                        embeds: {}
+                    }
+                });
+            } else {
+                return false;
+            }
         },
 
         editorInput: function (e) {

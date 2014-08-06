@@ -110,6 +110,10 @@ test('editor() inits medium-editor', function () {
   equal($('#page-content').hasClass('medium-editor-insert-plugin'), true, '#page-content have insert plugin');
 });
 
+test('editor() returns false if there is no #page-name or #page-content', function () {
+  equal(marvin_pages.editor(), false, 'false returned');
+});
+
 test('editorInput() copies content of editor to its input', function () {
   $('#qunit-fixture').html('<div id="page-name">abc</div>'+
     '<div id="page-content">def</div>'+
