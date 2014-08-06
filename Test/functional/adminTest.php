@@ -1,6 +1,6 @@
 <?php
 
-use Marvin\Core\Test\FunctionalTestCase;
+use Marvin\Marvin\Test\FunctionalTestCase;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
