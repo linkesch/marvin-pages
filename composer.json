@@ -1,6 +1,6 @@
 {
     "name": "marvin/pages",
-    "description": "Micro CMS based on Silex framework - Pages plugin",
+    "description": "Pages plugin for Marvin - PHP micro CMS based on Silex framework",
     "version": "0.0.1",
     "homepage": "http://github.com/orthes/marvin-pages",
     "license": "MIT",
