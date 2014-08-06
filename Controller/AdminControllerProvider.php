@@ -69,7 +69,9 @@ class AdminControllerProvider implements ControllerProviderInterface
                         date('Y-m-d H:i:s'),
                     ));
 
-                    $app['session']->getFlashBag()->add('message', 'The new page was added');
+                    $data['id'] = $app['db']->lastInsertId();
+
+                    $app['session']->getFlashBag()->add('message', 'The new page was added.');
                 }
                 else
                 {
@@ -81,10 +83,10 @@ class AdminControllerProvider implements ControllerProviderInterface
                         $data['id'],
                     ));
 
-                    $app['session']->getFlashBag()->add('message', 'The page was changed');
+                    $app['session']->getFlashBag()->add('message', 'Changes were saved.');
                 }
 
-                return $app->redirect('/admin/pages');
+                return $app->redirect('/admin/pages/form/'. $data['id']);
             }
 
             return $app['twig']->render('admin/pages/form.twig', array(
@@ -117,6 +119,31 @@ class AdminControllerProvider implements ControllerProviderInterface
         })
         ->assert('id', '\d+')
         ->assert('type', '(up|down)');
+
+        $controllers->match('/file/upload', function (Request $request) use ($app) {
+            $file = $request->files->get('file');
+
+            if($file)
+            {
+                if(file_exists($app['config']['upload_dir']) == false)
+                {
+                    mkdir($app['config']['upload_dir']);
+                }
+
+                $file->move($app['config']['upload_dir'], $file->getClientOriginalName());
+
+                return $app['config']['public_upload_dir'] .'/'. $file->getClientOriginalName();
+            }
+        });
+
+        $controllers->match('/file/delete', function (Request $request) use ($app) {
+            $file = $request->get('file');
+
+            if(file_exists($app['config']['web_dir'] .'/'. $file) && dirname($file) == $app['config']['public_upload_dir'])
+            {
+                unlink($app['config']['web_dir'] .'/'. $file);
+            }
+        });
 
         return $controllers;
     }

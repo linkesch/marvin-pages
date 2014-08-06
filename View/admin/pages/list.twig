@@ -1,5 +1,10 @@
 {% extends "admin/layout.twig" %}
 
+{% block javascripts %}
+  {{ parent() }}
+  <script src="/assets/marvin/pages/js/admin/pages.js"></script>
+{% endblock %}
+
 {% block content %}
     <header class="page-header">
         <h1>Pages</h1>

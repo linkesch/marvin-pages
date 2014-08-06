@@ -1,0 +1,19 @@
+{
+  "name": "marvin/pages",
+  "version": "0.0.1",
+  "authors": [
+    "Pavel Linkesch <pavel.linkesch@gmail.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "medium-editor-insert-plugin": "~0.2.7"
+  }
+}

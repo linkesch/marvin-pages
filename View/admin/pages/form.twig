@@ -1,8 +1,27 @@
 {% extends "admin/layout.twig" %}
 
+{% block stylesheets %}
+  {{ parent() }}
+  <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/marvin/pages/bower_components/medium-editor/dist/css/medium-editor.min.css">
+  <link rel="stylesheet" href="/assets/marvin/pages/bower_components/medium-editor/dist/css/themes/bootstrap.css">
+  <link rel="stylesheet" href="/assets/marvin/pages/bower_components/medium-editor-insert-plugin/dist/css/medium-editor-insert-plugin.min.css">
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script src="/assets/marvin/pages/bower_components/medium-editor/dist/js/medium-editor.min.js"></script>
+  <script src="/assets/marvin/pages/bower_components/medium-editor-insert-plugin/dist/js/medium-editor-insert-plugin.all.min.js"></script>
+  <script src="/assets/marvin/pages/js/admin/pages.js"></script>
+{% endblock %}
+
 {% block content %}
     <header class="page-header">
-        <h1>
+        {% for message in app.session.getFlashBag.get('message') %}
+            <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
+
+        <h1 class="editable" id="page-name">
             {% if form.vars.value %}
                 {{ form.vars.value.name }}
             {% else %}
@@ -11,8 +30,16 @@
         </h1>
     </header>
 
+    <div class="editable" id="page-content">
+      {{ form.vars.value.content|raw }}
+    </div>
+
+    <br><br>
+
     <form action="/admin/pages/form" method="post">
-        {{ form_widget(form) }}
+        <div class="hidden">
+          {{ form_widget(form) }}
+        </div>
 
         <button type="submit" class="btn btn-primary">Save</button> or <a href="/admin/pages">go back</a>
     </form>

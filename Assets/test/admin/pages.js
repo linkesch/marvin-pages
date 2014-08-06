@@ -10,6 +10,16 @@ asyncTest('init() calls events()', function () {
     marvin_pages.init();
 });
 
+asyncTest('init() calls editor()', function () {
+    this.stub(marvin_pages, 'editor', function () {
+        ok(1, 'editor() called');
+        marvin_pages.editor.restore();
+        start();
+    });
+
+    marvin_pages.init();
+});
+
 test('move() moves tr down if down button is clicked', function () {
     $('#qunit-fixture').html('<table id="pages">'+
         '<tr id="tr-1"><td><a class="move-down"></a></td></tr>'+
@@ -87,4 +97,32 @@ test('hideMoveButtons() shows move buttons and hide the first up button and the 
     equal($('#pages tr:nth-child(2) .move-down').hasClass('hidden'), false, '2nd move-down is visible');
     equal($('#pages tr:last .move-up').hasClass('hidden'), false, 'last move-up is visible');
     equal($('#pages tr:last .move-down').hasClass('hidden'), true, 'last move-down is hidden');
+});
+
+test('editor() inits medium-editor', function () {
+  $('#qunit-fixture').html('<div id="page-name"></div><div id="page-content"></div>');
+
+  marvin_pages.editor();
+
+  equal($('#page-name').attr('data-medium-element'), 'true', '#page-name has medium-editor');
+  equal($('#page-name').hasClass('medium-editor-insert-plugin'), false, '#page-name do not have insert plugin');
+  equal($('#page-content').attr('data-medium-element'), 'true', '#page-content has medium-editor');
+  equal($('#page-content').hasClass('medium-editor-insert-plugin'), true, '#page-content have insert plugin');
+});
+
+test('editorInput() copies content of editor to its input', function () {
+  $('#qunit-fixture').html('<div id="page-name">abc</div>'+
+    '<div id="page-content">def</div>'+
+    '<input id="form_name">'+
+    '<textarea id="form_content"></textarea>'
+  );
+
+  marvin_pages.editor();
+  marvin_pages.editorInput({ target: $('#page-name') });
+
+  equal($('#form_name').val(), 'abc', 'input content is copied');
+  equal($('#form_content').val(), '', 'textarea content is not copied yet');
+
+  marvin_pages.editorInput({ target: $('#page-content') });
+  equal($('#form_content').val(), 'def', 'textarea content is copied');
 });
