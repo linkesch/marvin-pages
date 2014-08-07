@@ -21,24 +21,24 @@
             <div class="alert alert-success">{{ message }}</div>
         {% endfor %}
 
-        <h1 class="editable" id="page-name">
+        <h1 class="editable" id="page-name" data-placeholder="Type the new page title">
             {% if form.vars.value %}
                 {{ form.vars.value.name }}
-            {% else %}
-                New page
             {% endif %}
         </h1>
     </header>
 
     <div class="editable" id="page-content">
-      {{ form.vars.value.content|raw }}
+        {% if form.vars.value %}
+            {{ form.vars.value.content|raw }}
+        {% endif %}
     </div>
 
     <br><br>
 
     <form action="/admin/pages/form" method="post">
         <div class="hidden">
-          {{ form_widget(form) }}
+            {{ form_widget(form) }}
         </div>
 
         <button type="submit" class="btn btn-primary">Save</button> or <a href="/admin/pages">go back</a>

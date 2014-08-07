@@ -23,7 +23,6 @@ class adminTest extends FunctionalTestCase
         $crawler = $client->request('GET', '/admin/pages/form');
 
         $this->assertTrue($client->getResponse()->isOk());
-        $this->assertCount(1, $crawler->filter('h1:contains("New page")'));
 
         $form = $crawler->selectButton('Save')->form();
         $crawler = $client->submit($form, array(
@@ -31,6 +30,8 @@ class adminTest extends FunctionalTestCase
         ));
 
         $this->assertTrue($client->getResponse()->isOk());
+
+        $crawler = $client->request('GET', '/admin/pages');
         $this->assertCount(2, $crawler->filter('#pages tbody tr'));
         $this->assertEquals('Test page', $crawler->filter('table#pages tbody tr:last-child td:first-child')->text());
     }
@@ -58,6 +59,8 @@ class adminTest extends FunctionalTestCase
         ));
 
         $this->assertTrue($client->getResponse()->isOk());
+
+        $crawler = $client->request('GET', '/admin/pages');
         $this->assertCount(3, $crawler->filter('#pages tbody tr'));
         $this->assertEquals('Test page', $crawler->filter('table#pages tbody tr:last-child td:first-child')->text());
         $this->assertEquals('/test-page-2', $crawler->filter('table#pages tbody tr:last-child td:nth-child(2)')->text());
@@ -87,6 +90,8 @@ class adminTest extends FunctionalTestCase
         ));
 
         $this->assertTrue($client->getResponse()->isOk());
+
+        $crawler = $client->request('GET', '/admin/pages');
         $this->assertCount(2, $crawler->filter('#pages tbody tr'));
         $this->assertEquals('Test page 2', $crawler->filter('table#pages tbody tr:last-child td:first-child')->text());
     }
@@ -107,6 +112,8 @@ class adminTest extends FunctionalTestCase
         $crawler = $client->request('GET', '/admin/pages/delete/1');
 
         $this->assertTrue($client->getResponse()->isOk());
+
+        $crawler = $client->request('GET', '/admin/pages');
         $this->assertCount(1, $crawler->filter('#pages tbody tr'));
         $page = $this->app['db']->fetchAssoc("SELECT sort FROM page WHERE id = 2");
         $this->assertEquals(1, $page['sort']);
