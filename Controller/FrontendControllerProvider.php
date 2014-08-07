@@ -13,7 +13,7 @@ class FrontendControllerProvider implements ControllerProviderInterface
     {
         $controllers = $app['controllers_factory'];
 
-        $controllers->get('/{slug}', function ($slug) use ($app) {
+        $controllers->get('/{slug}', function (Request $request, $slug) use ($app) {
             if($slug)
             {
                 $page = $app['db']->fetchAssoc("SELECT * FROM page WHERE slug = ?", array($slug));
@@ -21,6 +21,7 @@ class FrontendControllerProvider implements ControllerProviderInterface
             else
             {
                 $page = $app['db']->fetchAssoc("SELECT * FROM page ORDER BY sort ASC LIMIT 0,1");
+                $request->query->set('slug', $page['slug']);
             }
 
             return $app['twig']->render($app['config']['theme'] .'/page.twig', array(
