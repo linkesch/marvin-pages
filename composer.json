@@ -11,7 +11,7 @@
         }
     ],
     "require": {
-        "marvin/marvin": "~0.0.3"
+        "marvin/marvin": "0.0.x-dev"
     },
     "autoload": {
         "psr-4": {
