@@ -13,7 +13,6 @@ class adminTest extends FunctionalTestCase
         $crawler = $client->request('GET', '/admin/pages');
 
         $this->assertTrue($client->getResponse()->isOk());
-        $this->assertCount(1, $crawler->filter('h1:contains("Pages")'));
     }
 
     public function testNewPage()
@@ -24,7 +23,7 @@ class adminTest extends FunctionalTestCase
 
         $this->assertTrue($client->getResponse()->isOk());
 
-        $form = $crawler->selectButton('Save')->form();
+        $form = $crawler->selectButton('save')->form();
         $crawler = $client->submit($form, array(
             'form[name]' => 'Test page',
         ));
@@ -53,7 +52,7 @@ class adminTest extends FunctionalTestCase
 
         $this->assertTrue($client->getResponse()->isOk());
 
-        $form = $crawler->selectButton('Save')->form();
+        $form = $crawler->selectButton('save')->form();
         $crawler = $client->submit($form, array(
             'form[name]' => 'Test page',
         ));
@@ -84,7 +83,7 @@ class adminTest extends FunctionalTestCase
         $this->assertTrue($client->getResponse()->isOk());
         $this->assertCount(1, $crawler->filter('h1:contains("Test page")'));
 
-        $form = $crawler->selectButton('Save')->form();
+        $form = $crawler->selectButton('save')->form();
         $crawler = $client->submit($form, array(
             'form[name]' => 'Test page 2',
         ));
