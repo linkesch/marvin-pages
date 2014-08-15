@@ -21,7 +21,7 @@
             <div class="alert alert-success">{{ message }}</div>
         {% endfor %}
 
-        <h1 class="editable" id="page-name" data-placeholder="Type the new page title">
+        <h1 class="editable" id="page-name" data-placeholder="{{ 'Type the new page title'|trans }}">
             {% if form.vars.value %}
                 {{ form.vars.value.name }}
             {% endif %}
@@ -41,6 +41,6 @@
             {{ form_widget(form) }}
         </div>
 
-        <button type="submit" class="btn btn-primary">Save</button> or <a href="/admin/pages">go back</a>
+        <button type="submit" class="btn btn-primary">{{ 'Save'|trans }}</button> {{ 'or'|trans }} <a href="/admin/pages">{{ 'go back'|trans }}</a>
     </form>
 {% endblock %}

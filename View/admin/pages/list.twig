@@ -7,7 +7,7 @@
 
 {% block content %}
     <header class="page-header">
-        <h1>Pages</h1>
+        <h1>{{ 'Pages'|trans }}</h1>
     </header>
 
     {% for message in app.session.getFlashBag.get('message') %}
@@ -15,15 +15,15 @@
     {% endfor %}
 
     <p><a href="/admin/pages/form" class="btn btn-primary">New page</a></p>
-    <p>Number of pages: {{ pages|length }}</p>
+    <p>{{ 'Number of pages'|trans }}: {{ pages|length }}</p>
     <br>
 
     <table id="pages" class="table table-striped">
         <thead>
             <tr>
-                <th>Page</th>
-                <th>URL</th>
-                <th width="20%" colspan="2">Order</th>
+                <th>{{ 'Page'|trans }}</th>
+                <th>{{ 'URL'|trans }}</th>
+                <th width="20%" colspan="2">{{ 'Order'|trans }}</th>
                 <th width="15%"></th>
             </tr>
         </thead>
@@ -35,23 +35,23 @@
                     <td>
                         <a href="/admin/pages/move/{{ page.id }}/up" class="btn btn-default move-up move{% if loop.first %} hidden{% endif %}">
                             <span class="glyphicon glyphicon-arrow-up"></span>
-                            Move up
+                            {{ 'Move up'|trans }}
                         </a>
                     </td>
                     <td>
                         <a href="/admin/pages/move/{{ page.id }}/down" class="btn btn-default move-down move{% if loop.last %} hidden{% endif %}">
                             <span class="glyphicon glyphicon-arrow-down"></span>
-                            Move down
+                            {{ 'Move down'|trans }}
                         </a>
                     </td>
                     <td>
-                        <a href="/admin/pages/form/{{ page.id }}" class="btn btn-primary">Edit</a>
-                        <a href="/admin/pages/delete/{{ page.id }}" class="btn btn-danger confirm">Delete</a>
+                        <a href="/admin/pages/form/{{ page.id }}" class="btn btn-primary">{{ 'Edit'|trans }}</a>
+                        <a href="/admin/pages/delete/{{ page.id }}" class="btn btn-danger confirm">{{ 'Delete'|trans }}</a>
                     </td>
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="4">There are no pages. <a href="/admin/pages/form">Create the first one now.</a></td>
+                    <td colspan="4">{{ 'There are no pages.'|trans }} <a href="/admin/pages/form">{{ 'Create the first one now.'|trans }}</a></td>
                 </tr>
             {% endfor %}
         </tbody>

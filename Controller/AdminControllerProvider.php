@@ -71,7 +71,7 @@ class AdminControllerProvider implements ControllerProviderInterface
 
                     $data['id'] = $app['db']->lastInsertId();
 
-                    $app['session']->getFlashBag()->add('message', 'The new page was added.');
+                    $app['session']->getFlashBag()->add('message', $app['translator']->trans('The new page was added.'));
                 }
                 else
                 {
@@ -83,7 +83,7 @@ class AdminControllerProvider implements ControllerProviderInterface
                         $data['id'],
                     ));
 
-                    $app['session']->getFlashBag()->add('message', 'Changes were saved.');
+                    $app['session']->getFlashBag()->add('message', $app['translator']->trans('Changes were saved.'));
                 }
 
                 return $app->redirect('/admin/pages/form/'. $data['id']);
@@ -102,7 +102,7 @@ class AdminControllerProvider implements ControllerProviderInterface
 
             $app['db']->delete('page', array('id' => $id));
 
-            $app['session']->getFlashBag()->add('message', 'The page was deleted');
+            $app['session']->getFlashBag()->add('message', $app['translator']->trans('The page was deleted'));
             return $app->redirect('/admin/pages');
         })
         ->assert('id', '\d+');
@@ -114,7 +114,7 @@ class AdminControllerProvider implements ControllerProviderInterface
             $app['db']->executeUpdate("UPDATE page SET sort=sort+? WHERE sort = ?", array(-$action, $page['sort']+$action));
             $app['db']->executeUpdate("UPDATE page SET sort=sort+? WHERE id = ?", array($action, $id));
 
-            $app['session']->getFlashBag()->add('message', 'Order of pages was changed');
+            $app['session']->getFlashBag()->add('message', $app['translator']->trans('Order of pages was changed'));
             return $app->redirect('/admin/pages');
         })
         ->assert('id', '\d+')
