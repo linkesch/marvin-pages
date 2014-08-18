@@ -24,6 +24,11 @@ class FrontendControllerProvider implements ControllerProviderInterface
                 $request->query->set('slug', $page['slug']);
             }
 
+            if(!$page)
+            {
+                $app->abort(404, 'Page "'. $slug .'" does not exist.');
+            }
+
             return $app['twig']->render($app['config']['theme'] .'/page.twig', array(
                 'page' => $page,
             ));
