@@ -9,6 +9,10 @@ class FrontendServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
+        $app['pages_plugins'] = function () {
+            return array();
+        };
+
         $app['menu'] = function () use ($app) {
             $pages = $app['db']->fetchAll("SELECT id, name, slug FROM page ORDER BY sort ASC");
 

@@ -24,8 +24,17 @@ class FrontendControllerProvider implements ControllerProviderInterface
                 $app->abort(404, 'Page "'. $slug .'" does not exist.');
             }
 
+            // Other plugins
+            $pagesPlugins = array();
+            foreach ($app['config']['plugins'] as $plugin) {
+                if ($plugin != 'pages' && isset($app['pages_plugins'][$plugin])) {
+                    $pagesPlugins[$plugin] = $app['pages_plugins'][$plugin]($page['id']);
+                }
+            }
+
             return $app['twig']->render($app['config']['theme'] .'/page.twig', array(
                 'page' => $page,
+                'pagesPlugins' => $pagesPlugins,
             ));
 
         })

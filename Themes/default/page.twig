@@ -1,0 +1,17 @@
+{% extends "default/layout.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="/assets/marvin/pages/bower_components/medium-editor-insert-plugin/dist/css/medium-editor-insert-plugin-frontend.min.css">
+{% endblock %}
+
+{% block content %}
+    {{ page.content|raw }}
+
+    {% for plugin in pagesPlugins %}
+        {% if plugin %}
+            <br><br>
+            {% include plugin.template with { 'plugin': plugin } %}
+        {% endif %}
+    {% endfor %}
+{% endblock %}
