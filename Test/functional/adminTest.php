@@ -1,8 +1,6 @@
 <?php
 
 use Marvin\Marvin\Test\FunctionalTestCase;
-use Symfony\Component\BrowserKit\Cookie;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class adminTest extends FunctionalTestCase
 {
@@ -136,7 +134,6 @@ class adminTest extends FunctionalTestCase
         $this->assertTrue($client->getResponse()->isOk());
         $this->assertEquals('Test page', $crawler->filter('table#pages tbody tr:first-child td:first-child')->text());
         $this->assertEquals('Home', $crawler->filter('table#pages tbody tr:last-child td:first-child')->text());
-
 
         $crawler = $client->request('POST', '/admin/pages/move/1/up');
 

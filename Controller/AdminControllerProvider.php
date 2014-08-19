@@ -6,7 +6,6 @@ use Silex\Application;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-
 class AdminControllerProvider implements ControllerProviderInterface
 {
     public function connect(Application $app)
@@ -25,8 +24,7 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers->match('/form/{id}', function (Request $request, $id) use ($app) {
             $pageData = array();
 
-            if($id > 0)
-            {
+            if ($id > 0) {
                 $pageData = $app['db']->fetchAssoc("SELECT * FROM page WHERE id = ?", array($id));
             }
 
@@ -40,25 +38,20 @@ class AdminControllerProvider implements ControllerProviderInterface
 
             $form->handleRequest($request);
 
-            if($form->isValid())
-            {
+            if ($form->isValid()) {
                 $data = $form->getData();
 
                 $slug = $originalSlug = $app['slugify']->slugify($data['name']);
                 $i = 2;
-                do
-                {
+                do {
                     $find = $app['db']->fetchAssoc("SELECT COUNT(*) AS count FROM page WHERE slug = ?". ($data['id'] > 0 ? " AND id != ". $data['id'] : ""), array($slug));
-                    if($find['count'] > 0)
-                    {
+                    if ($find['count'] > 0) {
                         $slug = $originalSlug .'-'. $i;
                         $i++;
                     }
-                }
-                while($find['count'] > 0);
+                } while ($find['count'] > 0);
 
-                if($data['id'] == 0)
-                {
+                if ($data['id'] == 0) {
                     $maxSort = $app['db']->fetchAssoc("SELECT MAX(sort) AS sort FROM page");
                     $app['db']->executeUpdate("INSERT INTO page (name, slug, content, sort, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)", array(
                         $data['name'],
@@ -72,9 +65,7 @@ class AdminControllerProvider implements ControllerProviderInterface
                     $data['id'] = $app['db']->lastInsertId();
 
                     $app['session']->getFlashBag()->add('message', $app['translator']->trans('The new page was added.'));
-                }
-                else
-                {
+                } else {
                     $app['db']->executeUpdate("UPDATE page SET name = ?, slug = ?, content = ?, updated_at = ? WHERE id = ?", array(
                         $data['name'],
                         $slug,
@@ -103,6 +94,7 @@ class AdminControllerProvider implements ControllerProviderInterface
             $app['db']->delete('page', array('id' => $id));
 
             $app['session']->getFlashBag()->add('message', $app['translator']->trans('The page was deleted'));
+
             return $app->redirect('/admin/pages');
         })
         ->assert('id', '\d+');
@@ -115,6 +107,7 @@ class AdminControllerProvider implements ControllerProviderInterface
             $app['db']->executeUpdate("UPDATE page SET sort=sort+? WHERE id = ?", array($action, $id));
 
             $app['session']->getFlashBag()->add('message', $app['translator']->trans('Order of pages was changed'));
+
             return $app->redirect('/admin/pages');
         })
         ->assert('id', '\d+')
@@ -123,10 +116,8 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers->match('/file/upload', function (Request $request) use ($app) {
             $file = $request->files->get('file');
 
-            if($file)
-            {
-                if(file_exists($app['config']['upload_dir']) == false)
-                {
+            if ($file) {
+                if (file_exists($app['config']['upload_dir']) == false) {
                     mkdir($app['config']['upload_dir']);
                 }
 
@@ -139,8 +130,7 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers->match('/file/delete', function (Request $request) use ($app) {
             $file = $request->get('file');
 
-            if(file_exists($app['config']['web_dir'] .'/'. $file) && dirname($file) == $app['config']['public_upload_dir'])
-            {
+            if (file_exists($app['config']['web_dir'] .'/'. $file) && dirname($file) == $app['config']['public_upload_dir']) {
                 unlink($app['config']['web_dir'] .'/'. $file);
             }
         });

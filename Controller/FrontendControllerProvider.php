@@ -6,7 +6,6 @@ use Silex\Application;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-
 class FrontendControllerProvider implements ControllerProviderInterface
 {
     public function connect(Application $app)
@@ -14,18 +13,14 @@ class FrontendControllerProvider implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         $controllers->get('/{slug}', function (Request $request, $slug) use ($app) {
-            if($slug)
-            {
+            if ($slug) {
                 $page = $app['db']->fetchAssoc("SELECT * FROM page WHERE slug = ?", array($slug));
-            }
-            else
-            {
+            } else {
                 $page = $app['db']->fetchAssoc("SELECT * FROM page ORDER BY sort ASC LIMIT 0,1");
                 $request->query->set('slug', $page['slug']);
             }
 
-            if(!$page)
-            {
+            if (!$page) {
                 $app->abort(404, 'Page "'. $slug .'" does not exist.');
             }
 
