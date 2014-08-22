@@ -11,46 +11,63 @@ class InstallServiceProvider implements ServiceProviderInterface
     {
         $app->extend('install_plugins', function ($plugins) use ($app) {
 
-            $plugins[] = function () use ($app) {
+            $plugins['pages'] = function () use ($app) {
 
                 $sm = $app['db']->getSchemaManager();
                 $schema = new \Doctrine\DBAL\Schema\Schema();
 
-                // Create table page
-                $pageTable = $schema->createTable('page');
-                $pageTable->addColumn('id', 'integer', array("autoincrement" => true));
-                $pageTable->addColumn('name', 'string');
-                $pageTable->addColumn('slug', 'string');
-                $pageTable->addColumn('content', 'text', array('notnull' => false));
-                $pageTable->addColumn('sort', 'integer', array('notnull' => false));
-                $pageTable->addColumn('created_at', 'datetime');
-                $pageTable->addColumn('updated_at', 'datetime');
-                $pageTable->setPrimaryKey(array("id"));
-                $pageTable->addUniqueIndex(array("slug"));
-                $sm->createTable($pageTable);
+                if ($sm->tablesExist(array('page')) == false) {
+                    // Create table page
+                    $pageTable = $schema->createTable('page');
+                    $pageTable->addColumn('id', 'integer', array("autoincrement" => true));
+                    $pageTable->addColumn('name', 'string');
+                    $pageTable->addColumn('slug', 'string');
+                    $pageTable->addColumn('content', 'text', array('notnull' => false));
+                    $pageTable->addColumn('sort', 'integer', array('notnull' => false));
+                    $pageTable->addColumn('created_at', 'datetime');
+                    $pageTable->addColumn('updated_at', 'datetime');
+                    $pageTable->setPrimaryKey(array("id"));
+                    $pageTable->addUniqueIndex(array("slug"));
+                    $sm->createTable($pageTable);
 
-                $messages[] = $app['install_status'](
-                    $sm->tablesExist(array('page')),
-                    'Page table was created.',
-                    'Problem creating page table.'
-                );
+                    $messages[] = $app['install_status'](
+                        $sm->tablesExist(array('page')),
+                        'Page table was created.',
+                        'Problem creating page table.'
+                    );
 
-                // Create homepage
-                $app['db']->executeUpdate("INSERT INTO page (name, slug, content, sort, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)", array(
-                    'Home',
-                    'home',
-                    '<p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Donec sed odio dui. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Etiam porta sem malesuada magna mollis euismod. Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>',
-                    1,
-                    date('Y-m-d H:i:s'),
-                    date('Y-m-d H:i:s'),
-                ));
+                    // Create homepage
+                    $app['db']->executeUpdate("INSERT INTO page (name, slug, content, sort, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)", array(
+                        'Home',
+                        'home',
+                        '<p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Donec sed odio dui. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Etiam porta sem malesuada magna mollis euismod. Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>',
+                        1,
+                        date('Y-m-d H:i:s'),
+                        date('Y-m-d H:i:s'),
+                    ));
 
-                $home = $app['db']->fetchAssoc("SELECT COUNT(*) AS count FROM page WHERE name = 'Home'");
-                $messages[] = $app['install_status'](
-                    $home['count'],
-                    'Homepage was created.',
-                    'Problem creating homepage.'
-                );
+                    $home = $app['db']->fetchAssoc("SELECT COUNT(*) AS count FROM page WHERE name = 'Home'");
+                    $messages[] = $app['install_status'](
+                        $home['count'],
+                        'Homepage was created.',
+                        'Problem creating homepage.'
+                    );
+
+                    if (file_exists(__DIR__ ."/../Themes")) {
+                        \Marvin\Marvin\Install::copy(__DIR__ ."/../Themes", $app['config']['themes_dir']);
+                        $messages[] = $app['install_status'](
+                            true,
+                            'Pages plugin\'s theme files were installed',
+                            null
+                        );
+                    }
+                } else {
+                    $messages[] = $app['install_status'](
+                        true,
+                        'Page table already exists.',
+                        null
+                    );
+                }
 
                 return $messages;
             };
