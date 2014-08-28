@@ -2,12 +2,12 @@
 
 use Marvin\Marvin\Test\FunctionalTestCase;
 
-class frontendTest extends FunctionalTestCase
+class FrontendTest extends FunctionalTestCase
 {
     public function testPagesList()
     {
         $client = $this->createClient();
-        $crawler = $client->request('GET', '/');
+        $client->request('GET', '/');
 
         $this->assertTrue($client->getResponse()->isOk());
     }

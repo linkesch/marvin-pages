@@ -2,13 +2,13 @@
 
 use Marvin\Marvin\Test\FunctionalTestCase;
 
-class adminTest extends FunctionalTestCase
+class AdminTest extends FunctionalTestCase
 {
     public function testPagesList()
     {
         $client = $this->createClient();
         $this->logIn($client);
-        $crawler = $client->request('GET', '/admin/pages');
+        $client->request('GET', '/admin/pages');
 
         $this->assertTrue($client->getResponse()->isOk());
     }
