@@ -13,7 +13,7 @@
         }
     ],
     "require": {
-        "marvin/marvin": "0.0.5"
+        "marvin/marvin": "~0.0.5"
     },
     "autoload": {
         "psr-4": {
