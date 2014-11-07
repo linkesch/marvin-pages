@@ -39,7 +39,7 @@ class FrontendControllerProvider implements ControllerProviderInterface
 
         })
         ->value('slug', null)
-        ->assert('slug', '(?!admin|install|login)([a-z0-9-_]+)')
+        ->assert('slug', '(?!admin|install|login|rss)([a-z0-9-_]+)')
         ->bind('page');
 
         return $controllers;
