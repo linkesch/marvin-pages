@@ -2,7 +2,7 @@ var marvin_pages = function () {
     var editors = {};
 
     return {
-        $table = $('#pages'),
+        $table: $('#pages'),
 
         init: function () {
             marvin_pages.events();
