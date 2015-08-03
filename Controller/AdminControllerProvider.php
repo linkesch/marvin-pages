@@ -117,7 +117,7 @@ class AdminControllerProvider implements ControllerProviderInterface
             $file = $request->files->get('file');
 
             if ($file) {
-                if (file_exists($app['config']['upload_dir']) == false) {
+                if (file_exists($app['config']['upload_dir']) === false) {
                     mkdir($app['config']['upload_dir']);
                 }
 

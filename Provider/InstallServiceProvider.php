@@ -16,7 +16,7 @@ class InstallServiceProvider implements ServiceProviderInterface
                 $sm = $app['db']->getSchemaManager();
                 $schema = new \Doctrine\DBAL\Schema\Schema();
 
-                if ($sm->tablesExist(array('page')) == false) {
+                if ($sm->tablesExist(array('page')) === false) {
                     // Create table page
                     $pageTable = $schema->createTable('page');
                     $pageTable->addColumn('id', 'integer', array("autoincrement" => true));
