@@ -1,10 +1,13 @@
 var marvin_pages = function () {
-    var editors = {};
+    var editors = {},
+        self;
 
     return {
         $table: $('#pages'),
 
         init: function () {
+            self = this;
+
             marvin_pages.events();
             marvin_pages.editor();
         },
@@ -29,10 +32,10 @@ var marvin_pages = function () {
                 $sibling.after($tr);
             }
 
-            if (this.$table.hasClass('striped-even')) {
-                this.$table.removeClass('striped-even');
+            if (self.$table.hasClass('striped-even')) {
+                self.$table.removeClass('striped-even');
             } else {
-                this.$table.addClass('striped-even');
+                self.$table.addClass('striped-even');
             }
 
             marvin_pages.hideMoveButtons();
@@ -41,10 +44,10 @@ var marvin_pages = function () {
         },
 
         hideMoveButtons: function () {
-            this.$table.find('.move-up, .move-down').removeClass('hidden');
+            self.$table.find('.move-up, .move-down').removeClass('hidden');
 
-            this.$table.find('tbody tr:first .move-up').addClass('hidden');
-            this.$table.find('tbody tr:last .move-down').addClass('hidden');
+            self.$table.find('tbody tr:first .move-up').addClass('hidden');
+            self.$table.find('tbody tr:last .move-down').addClass('hidden');
         },
 
         editor: function () {
